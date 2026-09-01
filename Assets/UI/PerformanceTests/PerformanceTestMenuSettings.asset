@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08bfae2f19a54fd469bda6c7734692a0, type: 3}
+  m_Name: PerformanceTestMenuSettings
+  m_EditorClassIdentifier: Assembly-CSharp::CoreCLRTest.UI.PerformanceTestMenuSettings
+  targetFrameRateDescription: Configures the target FPS goal used by the performance tests. Each test will spawn and despawn entities until the target frame rate is reached. This value does not cap the application's frame rate.
+  frameRateDeltaDescription: Configures the acceptable range around the target FPS. Lower values provide more accurate results, but tests may take longer to complete.
+  performanceTest1Description: This tests the number of ECS entities that can be simulated while moving to random points on the screen. Movement is linear (no pathfinding) and no physics objects are present in the scene.
+  performanceTest2Description: Spawns batches of physics spheres through a Plinko track. This tests the maximum entity count of simple DOTS Physics objects that can be simulated at the target frame rate.
+  performanceTest3Description: Spawns batches of walls and moving entities. The moving entities will navigate to random points in the simulation area while avoiding walls using A* Pathfinding. Although the walls are static, the entities are configured to constantly recalculate their path every frame to better test CPU utilization.

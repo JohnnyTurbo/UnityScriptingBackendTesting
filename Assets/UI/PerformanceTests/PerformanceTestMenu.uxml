@@ -1,0 +1,88 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/PerformanceTests/PerformanceTestMenu.uss?fileID=7433441132597879392&amp;guid=58fc4ce63f2bb9946b0131e638c0af1c&amp;type=3#PerformanceTestMenu"/>
+    <ui:VisualElement name="performance-menu-root" class="performance-menu-root">
+        <ui:VisualElement name="running-test-overlay" class="running-test-overlay hidden">
+            <ui:Label name="running-test-title-label" text="Now Running: Random Movement" class="running-test-title"/>
+            <ui:Label name="running-test-count-label" text="(Test 1 of 3)" class="running-test-count"/>
+            <ui:Label name="running-resolution-label" text="Resolution: —" class="running-test-value"/>
+            <ui:Label name="running-target-frame-rate-label" text="Target FPS: —" class="running-test-value"/>
+            <ui:Label name="running-frame-rate-delta-label" text="FPS Delta: —" class="running-test-value"/>
+            <ui:Label name="running-current-frame-rate-label" text="Current FPS: —" class="running-test-value"/>
+            <ui:Label name="running-entity-count-label" text="Entity Count: —" class="running-test-value"/>
+            <ui:Button name="end-test-button" text="End Test" class="menu-button end-test-button"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="main-menu-screen" class="menu-card">
+            <ui:Label text="Performance Test Configuration" class="menu-heading"/>
+            <ui:Label name="main-build-configuration-label" text="Unknown | Burst: —" class="build-configuration-badge"/>
+            <ui:VisualElement class="field-group">
+                <ui:VisualElement class="field-row">
+                    <ui:Label text="Render Resolution" class="field-label"/>
+                    <ui:DropdownField name="resolution-dropdown" class="field-control"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="field-group">
+                <ui:VisualElement class="field-row">
+                    <ui:Label text="Fullscreen" class="field-label"/>
+                    <ui:Toggle name="fullscreen-toggle" value="true" class="option-toggle"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement class="field-group">
+                <ui:VisualElement name="target-frame-rate-row" class="field-row">
+                    <ui:Label text="Target Frame Rate" class="field-label"/>
+                    <ui:DropdownField name="target-frame-rate-dropdown" value="60" class="field-control target-frame-rate-dropdown"/>
+                    <ui:IntegerField name="target-frame-rate-field" value="60" is-delayed="false" class="field-control target-frame-rate-input hidden"/>
+                </ui:VisualElement>
+                <ui:Label name="target-frame-rate-warning" text="Target frame rate must be between 10 and 1000." class="validation-warning validation-warning-hidden"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="field-group">
+                <ui:VisualElement name="frame-rate-delta-row" class="field-row">
+                    <ui:Label text="Frame Rate Delta (± FPS)" class="field-label"/>
+                    <ui:IntegerField name="frame-rate-delta-field" value="1" is-delayed="false" class="field-control frame-rate-delta-input"/>
+                </ui:VisualElement>
+                <ui:Label name="frame-rate-delta-warning" text="Frame rate delta must be between 0 and 1000." class="validation-warning validation-warning-hidden"/>
+            </ui:VisualElement>
+            <ui:Label text="Performance Tests" class="section-heading"/>
+            <ui:VisualElement name="performance-test-1-row" class="option-row">
+                <ui:Label text="Random Movement" class="option-label"/>
+                <ui:Toggle name="performance-test-1-toggle" value="true" class="option-toggle"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="performance-test-2-row" class="option-row">
+                <ui:Label text="Plinko Physics" class="option-label"/>
+                <ui:Toggle name="performance-test-2-toggle" value="true" class="option-toggle"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="performance-test-3-row" class="option-row">
+                <ui:Label text="A* Pathfinding" class="option-label"/>
+                <ui:Toggle name="performance-test-3-toggle" value="true" class="option-toggle"/>
+            </ui:VisualElement>
+            <ui:Label name="performance-test-tooltip" picking-mode="Ignore" class="performance-test-tooltip hidden"/>
+            <ui:VisualElement class="action-row">
+                <ui:Button name="main-quit-button" text="Quit" class="menu-button secondary-button"/>
+                <ui:Button name="run-tests-button" text="Run Tests" class="menu-button"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="results-screen" class="menu-card results-card hidden">
+            <ui:Label text="Performance Test Results" class="menu-heading"/>
+            <ui:Label name="results-build-configuration-label" text="Unknown | Burst: —" class="build-configuration-badge"/>
+            <ui:VisualElement class="summary-container">
+                <ui:Label name="results-target-frame-rate-label" text="Target Frame Rate: —" class="summary-label"/>
+                <ui:Label name="results-frame-rate-delta-label" text="Frame Rate Delta: —" class="summary-label"/>
+                <ui:Label name="results-resolution-label" text="Render Resolution: —" class="summary-label"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="results-table">
+                <ui:VisualElement class="results-row results-header">
+                    <ui:Label text="Test Name" class="results-cell results-test-name-column"/>
+                    <ui:Label text="Entity Count" class="results-cell results-entity-count-column"/>
+                    <ui:Label name="results-process-cpu-header" text="Process CPU" class="results-cell results-process-cpu-column"/>
+                    <ui:Label name="results-cpu-frame-time-header" text="CPU Frame Time" class="results-cell results-frame-time-column"/>
+                    <ui:Label name="results-gpu-frame-time-header" text="GPU Frame Time" class="results-cell results-frame-time-column"/>
+                    <ui:Label name="results-peak-app-memory-header" text="Peak App Memory" class="results-cell results-memory-column"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="results-table-body"/>
+            </ui:VisualElement>
+            <ui:VisualElement class="action-row">
+                <ui:Button name="results-quit-button" text="Quit" class="menu-button secondary-button"/>
+                <ui:Button name="return-to-menu-button" text="Return to Menu" class="menu-button"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
