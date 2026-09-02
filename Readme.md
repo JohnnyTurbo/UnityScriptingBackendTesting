@@ -15,58 +15,83 @@ This test is similar to the random movement test, however instead of linearly tr
 
 # Configuration Options
 The following configuration options are available in the main menu:
-- Render Resolution - Resolution at which the application should be rendered.
-- Fullscreen - Toggle to swap between fullscreen and windowed modes
-- Target Frame Rate - This is effectively the "goal" frame rate that the application is aiming to achieve. This does not set the `Application.aargetFrameRate`, as the frame rate of the application remains unlocked. Each test will add/remove entities until the application is running stably at this target frame rate value.
-- Frame Rate Delta - This value creates a wider target frame rate for the tests. This means if the Target Frame Rate was set to 60 fps and the Frame Rate Delta was set to 10, then the tests would pass if the sable frame rate is anywhere between 50 and 70 fps. Larger values will complete the tests quicker, while smaller values will take longer to find a target frame rate, but will provide more accurate results.
-- Performance Tests - Toggle which tests should be executed when pressing the "Run Tests" button.
+- **Render Resolution** - Resolution at which the application should be rendered.
+- **Fullscreen** - Toggle to swap between fullscreen and windowed modes
+- **Target Frame Rate** - This is effectively the "goal" frame rate that the application is aiming to achieve. This does not set the `Application.aargetFrameRate`, as the frame rate of the application remains unlocked. Each test will add/remove entities until the application is running stably at this target frame rate value.
+- **Frame Rate Delta** - This value creates a wider target frame rate for the tests. This means if the Target Frame Rate was set to 60 fps and the Frame Rate Delta was set to 10, then the tests would pass if the sable frame rate is anywhere between 50 and 70 fps. Larger values will complete the tests quicker, while smaller values will take longer to find a target frame rate, but will provide more accurate results.
+- **Performance Tests** - Toggle which tests should be executed when pressing the "Run Tests" button.
 
 # Performance Metrics
 Once the tests are complete, the following metrics will be shown:
 (Note: not all metrics are available on all platforms)
-- Test Name - Name of the test associated with this row of results
-- Entity Count - The number of entities simulated at the target frame rate. This is the primary metric of comparison between the different scripting backends.
-- Process CPU - When the test is in a stable state, the CPU is queried to determine the load percentage of the application
-- CPU Frame Time - Frame time of the application while simulating at the target frame rate. The percentage is compared with the frame time of the Target Frame Rate of the application. This metric can be used to validate the results - if this percentage is around 100%, we can be confident that the application achieved a stable state at the target frame rate. If this value is not close to 100% this could indicate something went wrong with the test and the results are a bit away from the target frame rate.
-- GPU Frame Time - Frame time for the GPU to render a frame. Higher values here indicate that the test is GPU bound.
-- Peak App Memory - Displays the amount of memory being used by the application when simulating at the target frame rate. In my testing, I did not see much variance on this metric, but it was still interesting to keep an eye on.
+- **Test Name** - Name of the test associated with this row of results
+- **Entity Count** - The number of entities simulated at the target frame rate. This is the primary metric of comparison between the different scripting backends.
+- **Process CPU** - When the test is in a stable state, the CPU is queried to determine the load percentage of the application
+- **CPU Frame Time** - Frame time of the application while simulating at the target frame rate. The percentage is compared with the frame time of the Target Frame Rate of the application. This metric can be used to validate the results - if this percentage is around 100%, we can be confident that the application achieved a stable state at the target frame rate. If this value is not close to 100% this could indicate something went wrong with the test and the results are a bit away from the target frame rate.
+- **GPU Frame Time** - Frame time for the GPU to render a frame. Higher values here indicate that the test is GPU bound.
+- **Peak App Memory** - Displays the amount of memory being used by the application when simulating at the target frame rate. In my testing, I did not see much variance on this metric, but it was still interesting to keep an eye on.
+
+# Running the Tests yourself
+Download the zip file associated with the platform you would like to test. Each zip file contains 5 separate builds of the testing suite with each of the scripting backends with burst enabled and disabled. 
+
+If you'd like to build the tests yourself, there is a handy editor tool that makes building for all the scripting backends easy. Navigate to CoreCLR Test > Clean Build Profiles and a window will pop up with some configuration options. Select the build profiles associated with the scripting backends you would like to build for, then press "Clean Build Selected Profiles" and all selected builds will be created. Note that you will need to manually Enable/Disable burst compilation in Project Settings > Burst AOT Settings and check/uncheck the boxes for Enable Burst Compilation and Enable Optimization. When creating separate Burst enabled/disabled builds, it is recommended to change the Output Root folder at the top of the editor window as to not overwrite existing valid builds.
 
 # Results
 Below you will find the results of my testing. Each table shows the number of entities being simulated at a target frame rate of 60 fps.
 
 You may notice that the CoreCLR scripting backend was only executed with Burst compilation disabled. This is because at the time of testing in Unity 6000.7.0a4, the experimental desktop player does not support Burst compilation. I would expect Burst compilation to come at a later time as I do see some verbiage in the CoreCLR documentation to indicate that Burst support is intended.
-## Windows Desktop
-CPU: AMD 5950X (16C/32T)
-GPU: RTX 4090 (24GB)
-RAM: 64GB
+### Windows Desktop
+**CPU:** AMD 5950X (16C/32T)
 
+**GPU:** RTX 4090 (24GB)
+
+**RAM:** 64GB
+<details>
+  <summary>Windows Desktop Results</summary>
+  
 |                     | Mono    | IL2CPP  | CoreCLR | Mono + Burst | IL2CPP + Burst |
 |---------------------|---------|---------|---------|--------------|----------------|
 | **Random Movement** | 176,128 | 176,128 | 188,416 | 196,608      | 172,032        |
 | **Plinko Physics**  | 2,175   | 12,524  | 15,360  | 27,648       | 27,392         |
-| **A* Pathfinding**  | 4,225   | 6,144   | 7,745   | 16,384       | 11,872         |
-## MacBook Pro
-MacBook Pro - M3 Pro
-CPU: 12-Core
-GPU: 18-Core
-RAM: 36 GB
+| **A\* Pathfinding**  | 4,225   | 6,144   | 7,745   | 16,384       | 11,872         |
+</details>
+
+### MacBook Pro - M3 Pro
+
+**CPU:** 12-Core
+
+**GPU:** 18-Core
+
+**RAM:** 36 GB
+<details>
+  <summary>MacBook Pro Results</summary>
 
 |                     | Mono   | IL2CPP | CoreCLR | Mono + Burst | IL2CPP + Burst |
 | ------------------- | ------ | ------ | ------- | ------------ | -------------- |
 | **Random Movement** | 43,008 | 43,008 | 43,008  | 43,008       | 43,008         |
 | **Plinko Physics**  | 2,924  | 18,431 | 22,582  | 32,768       | 32,768         |
-| **A* Pathfinding**  | 2,608  | 7,104  | 7,104   | 7,058        | 7,104          |
-## SteamDeck
-CPU: Zen 2 (4C/8T)
-GPU: 8 RDNA 2 CUs
-RAM: 16GB
+| **A\* Pathfinding**  | 2,608  | 7,104  | 7,104   | 7,058        | 7,104          |
+</details>
 
+### SteamDeck
+**CPU:** Zen 2 (4C/8T)
+
+**GPU:** 8 RDNA 2 CUs
+
+**RAM:** 16GB
+<details>
+  <summary>SteamDeck Results</summary>
+  
 |                     | Mono   | IL2CPP | CoreCLR | Mono + Burst | IL2CPP + Burst |
 | ------------------- | ------ | ------ | ------- | ------------ | -------------- |
 | **Random Movement** | 25,600 | 26,624 | 26,624  | 27,684       | 27,684         |
 | **Plinko Physics**  | 1,408  | 6,788  | 7,785   | 15,804       | 13,640         |
-| **A* Pathfinding**  | 1,208  | 2,128  | 2,336   | 4,224        | 4,225          |
+| **A\* Pathfinding**  | 1,208  | 2,128  | 2,336   | 4,224        | 4,225          |
+</details>
+
 # AI and Sponsorship Disclosure
 This testing suite was developed using Bezi, an AI Assistant with Unity integration. The primary LLM used was GPT 5.6 SOL on "Extra High."
 
 Linked below is the video I created to showcase this testing. This video includes a paid sponsorship from Bezi.
+
+[![Video thumbnail for CoreCLR performance test comparison.](https://img.youtube.com/vi/MlTXhUx8WMg/0.jpg)](https://youtu.be/MlTXhUx8WMg)
